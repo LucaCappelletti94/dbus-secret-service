@@ -70,5 +70,12 @@ jobs:
           toolchain: 1.78
           components: clippy
 
+      - name: Resolve dependencies that support the MSRV
+        env:
+          CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: fallback
+        run: |
+          rustup toolchain install stable --profile minimal
+          cargo +stable generate-lockfile
+
       - name: Clippy check
         run: cargo clippy --no-deps --all-targets -- -D warnings
